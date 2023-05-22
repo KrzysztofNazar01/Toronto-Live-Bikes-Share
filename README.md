@@ -1,7 +1,7 @@
-metro bike live share feed
+# Toronto Live Bikes Share Flask Web App 
 
-any datasource of this type is allowed
+## Goal
+The goal of the project is to create a web app with user interface.
 
-algorytm - k-nearest neighbours
-
-funkcjonalnosc - wizualizacja trasy na mapie
+## Main functionalities
+Find K avaialble bikes nearby to the user using the given location.
