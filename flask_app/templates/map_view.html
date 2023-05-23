@@ -1,1 +1,38 @@
-{{map_stations | safe}}
+{% block header %}
+  <h1>Toronto Live Bike Share</h1>
+
+{% endblock %}
+
+{% block content %}
+    <form action="/" method="POST">
+        <label for="lat">Latitude:</label>
+        <input type="number" step="0.000001" name="lat" id="lat">
+
+        <label for="lon">Longitude:</label>
+        <input type="number" step="0.000001" name="lon" id="lon">
+
+        <label for="k_value">K value:</label>
+        <input type="number" name="k_value" id="k_value">
+
+        <input type="submit" value="Search">
+    </form>
+{% endblock %}
+
+<script>
+    // set default values to the form fields
+  var defaultValue_lat = 43.671208; // The float value you want to set as default
+  var inputField_lat = document.getElementById("lat");
+  inputField_lat.value = defaultValue_lat.toFixed(4); // Set the default value with 2 decimal places
+
+  var defaultValue_lon = -79.417976; // The float value you want to set as default
+  var inputField_lon = document.getElementById("lon");
+  inputField_lon.value = defaultValue_lon.toFixed(4); // Set the default value with 2 decimal places
+
+  var defaultValue_k_value = 10; // The float value you want to set as default
+  var inputField_k_value = document.getElementById("k_value");
+  inputField_k_value.value = defaultValue_k_value; // Set the default value with 2 decimal places
+
+
+</script>
+
+{% extends 'folium_map.html' %}

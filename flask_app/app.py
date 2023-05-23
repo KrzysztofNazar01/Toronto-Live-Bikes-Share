@@ -22,25 +22,26 @@ class Todo(db.Model):
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    df_stations = get_data()
+    if request.method == 'POST':
 
-    target_latitude, target_longitude = 43.633655, -79.398874
-    k = 3  # Number of nearest neighbors to find
-    nearest_neighbors = find_nearest_k_neighbours(df_stations, target_latitude, target_longitude, k)
+        # get values from html form using id of each field
+        target_latitude = float(request.form['lat'])
+        target_longitude = float(request.form['lon'])
+        k_value = int(request.form['k_value'])  # Number of nearest neighbors to find
 
-    html = create_map_with_stations(df_stations, nearest_neighbors)
+        # get the data from JSON
+        df_stations = get_data()
 
-    return render_template('map_view.html', map_stations=html)
+        # get the K nearest neighbours from the target location
+        nearest_neighbors = find_nearest_neighbors(target_latitude, target_longitude, df_stations, k_value)
 
+        # create and save the map
+        create_map_with_stations(df_stations, nearest_neighbors, target_latitude, target_longitude)
 
-def find_nearest_k_neighbours(df_stations, target_latitude, target_longitude, k):
-    nearest_neighbors = find_nearest_neighbors(target_latitude, target_longitude, df_stations, k)
+        return redirect('/')
 
-    # Print the nearest neighbors
-    for neighbor in nearest_neighbors:
-        print(neighbor['station_id'], "(", neighbor['lat'], ",", neighbor['lon'], ")")
-
-    return nearest_neighbors
+    else:
+        return render_template('map_view.html')
 
 
 if __name__ == "__main__":

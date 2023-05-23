@@ -77,6 +77,6 @@ def get_data():
     df_stations = pd.merge(df_information, df_status, on="station_id")
     df_stations = format_data(df_stations)
 
-    print(df_stations.columns.values)
+    # print(df_stations.columns.values)
 
     return df_stations
