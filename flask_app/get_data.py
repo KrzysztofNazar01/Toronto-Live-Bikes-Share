@@ -29,7 +29,7 @@ def get_live_data_links():
             # From here, you can use the "url" attribute to download this file
 
 
-def get_data(url):
+def get_data_from_url(url):
     response = requests.get(url)
 
     # Check if the request was successful
@@ -50,7 +50,7 @@ def format_data(df):
 
     # drop unneeded columns
     columns_to_drop = ['altitude', 'rental_methods', 'obcn', 'is_valet_station', 'cross_street',
-                       '_valet_station_details', '_ride_code_support',
+                       '_ride_code_support',
                        'physical_configuration', 'groups', 'post_code', 'name',
                        'is_renting', 'is_returning', 'last_reported', 'last_reported',
                        'traffic', 'is_installed', 'status']
@@ -64,14 +64,19 @@ def format_data(df):
     return df
 
 
-
+def get_data():
+    # url with json data
     url_station_information = "https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_information"
     url_station_status = "https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_status"
 
-    df_information = get_data(url_station_information)
-    df_status = get_data(url_station_status)
+    # parse the json data
+    df_information = get_data_from_url(url_station_information)
+    df_status = get_data_from_url(url_station_status)
 
+    # prepare data for further analysis
     df_stations = pd.merge(df_information, df_status, on="station_id")
     df_stations = format_data(df_stations)
 
-    print(df_stations)
+    print(df_stations.columns.values)
+
+    return df_stations
