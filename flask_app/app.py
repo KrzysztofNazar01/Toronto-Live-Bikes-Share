@@ -10,7 +10,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'  # 3 slashes --> rel
 db = SQLAlchemy(app)
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/search_available', methods=['POST', 'GET'])
 def index():
 
     # generate new map
@@ -19,17 +19,18 @@ def index():
         target_latitude = float(request.form['lat'])
         target_longitude = float(request.form['lon'])
         k_value = int(request.form['k_value'])  # Number of nearest neighbors to find
+        search_for_type = request.form['search_for']
 
         # get the data from JSON
         df_stations = get_data()
 
         # get the K nearest neighbours from the target location
-        nearest_neighbors = find_nearest_neighbors(target_latitude, target_longitude, df_stations, k_value)
+        nearest_neighbors = find_nearest_neighbors(target_latitude, target_longitude, df_stations, k_value, search_for_type)
 
         # create and save the map
         create_map_with_stations(df_stations, nearest_neighbors, target_latitude, target_longitude)
 
-        return redirect('/')
+        return redirect('/search_available')
 
     # use the already generated map
     else:

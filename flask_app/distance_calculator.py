@@ -37,7 +37,19 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     return distance
 
 
-def find_nearest_neighbors(target_lat, target_lon, df_stations, k):
+def filter_stations(df, search_for_type):
+    if search_for_type == 'bikes':
+        df = df.drop(df[df.num_bikes_available == 0].index)
+        df = df.drop(df[df.is_renting == 0].index)
+
+    elif search_for_type == 'docks':
+        df = df.drop(df[df.num_docks_available == 0].index)
+        df = df.drop(df[df.is_returning == 0].index)
+
+    return df
+
+
+def find_nearest_neighbors(target_lat, target_lon, df_stations, k, search_for_type):
     """
     Find the K nearest neighbors to a target location (latitude and longitude) from a list of locations.
 
@@ -49,8 +61,11 @@ def find_nearest_neighbors(target_lat, target_lon, df_stations, k):
     :return: K nearest neighbours to the target location
 
     """
+
+    stations_to_analyse = filter_stations(df_stations, search_for_type)
+
     distances = []
-    for index, location in df_stations.iterrows():
+    for index, location in stations_to_analyse.iterrows():
         lat, lon = location['lat'], location['lon']
         distance = haversine_distance(target_lat, target_lon, lat, lon)
         distances.append((location, distance))
@@ -62,5 +77,3 @@ def find_nearest_neighbors(target_lat, target_lon, df_stations, k):
         neighbors.append(distances[i][0])
 
     return neighbors
-
-

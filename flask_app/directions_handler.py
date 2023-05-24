@@ -2,6 +2,7 @@ import openrouteservice
 import folium
 from openrouteservice_api_key import api_key
 
+
 def calculate_color_based_on_distance(iteration, max_iterations):
     factor = float((iteration + 1) / max_iterations)
     r = 0 + int(200 * factor)
@@ -26,7 +27,7 @@ def calculate_weight_based_on_distance(iteration, max_iterations):
 
     """
     factor = float((iteration + 1) / max_iterations)
-    return num_to_range(factor, 1, float(1 / max_iterations), 2, 7)    # weight = 2/factor
+    return num_to_range(factor, 1, float(1 / max_iterations), 2, 7)  # weight = 2/factor
 
 
 def calculate_opacity_based_on_distance(iteration, max_iterations):
@@ -40,8 +41,7 @@ def calculate_opacity_based_on_distance(iteration, max_iterations):
 
     """
     factor = float((iteration + 1) / max_iterations)
-    return num_to_range(factor, 1, float(1 / max_iterations), 0.2, 1)    # weight = 2/factor
-
+    return num_to_range(factor, 1, float(1 / max_iterations), 0.2, 1)  # weight = 2/factor
 
 
 def add_paths_to_station(target_latitude, target_longitude, station, iteration, max_iterations):

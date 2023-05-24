@@ -33,12 +33,13 @@ def format_data(df):
     """
     # drop rows with stations out of service
     df.drop(df[df.status == 'END_OF_LIFE'].index, inplace=True)
+    df.drop(df[df.is_installed == 0].index, inplace=True)  # drop if station is not installed
 
     # drop unneeded columns
     columns_to_drop = ['altitude', 'rental_methods', 'obcn', 'is_valet_station', 'cross_street',
                        '_ride_code_support',
                        'physical_configuration', 'groups', 'post_code', 'name',
-                       'is_renting', 'is_returning', 'last_reported', 'last_reported',
+                       'last_reported', 'last_reported',
                        'traffic', 'is_installed', 'status']
     df.drop(columns_to_drop, axis=1, inplace=True)
 

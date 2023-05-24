@@ -154,3 +154,4 @@ project_description/
 
 flask_app/templates/folium_map.html
 flask_app/openrouteservice_api_key.py
+flask_app/templates/folium_map.html
