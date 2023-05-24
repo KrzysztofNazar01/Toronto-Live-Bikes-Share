@@ -3,33 +3,13 @@ import pandas as pd
 import json
 
 
-def get_live_data_links():
-    # all links with live data: https://ckan0.cf.opendata.inter.prod-toronto.ca/dataset/2b44db0d-eea9-442d-b038-79335368ad5a/resource/b69873a1-c180-4ccd-a970-514e434b4971/download/bike-share-gbfs-general-bikeshare-feed-specification.json
-
-    # https://docs.ckan.org/en/latest/api/
-    # Toronto Open Data is stored in a CKAN instance. It's APIs are documented here:
-
-    base_url = "https://ckan0.cf.opendata.inter.prod-toronto.ca"
-    # To hit our API, you'll be making requests to:
-
-    url = base_url + "/api/3/action/package_show"
-    # Datasets are called "packages". Each package can contain many "resources"
-    # To retrieve the metadata for this package and its resources, use the package name in this page's URL:
-    params = {"id": "bike-share-toronto"}
-    package = requests.get(url, params=params).json()
-
-    # To get resource data:
-    for idx, resource in enumerate(package["result"]["resources"]):
-
-        # To get metadata for non datastore_active resources:
-        if not resource["datastore_active"]:
-            url = base_url + "/api/3/action/resource_show?id=" + resource["id"]
-            resource_metadata = requests.get(url).json()
-            print(resource_metadata)
-            # From here, you can use the "url" attribute to download this file
-
-
 def get_data_from_url(url):
+    """
+    Parse JSON data from url.
+
+    :param url: Link containing the JSON data
+    :return: Dataframe containing the data from JSON
+    """
     response = requests.get(url)
 
     # Check if the request was successful
@@ -45,6 +25,12 @@ def get_data_from_url(url):
 
 
 def format_data(df):
+    """
+    Prepare the data for further analysis.
+
+    :param df: Pandas dataframe with stations' information and status
+    :return: Pandas dataframe with formatted data
+    """
     # drop rows with stations out of service
     df.drop(df[df.status == 'END_OF_LIFE'].index, inplace=True)
 
@@ -65,6 +51,12 @@ def format_data(df):
 
 
 def get_data():
+    """
+    Get data about the current station information and station status.
+    The data is in JSON format.
+
+    :return: Pandas dataframe with stations' information and status
+    """
     # url with json data
     url_station_information = "https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_information"
     url_station_status = "https://tor.publicbikesystem.net/ube/gbfs/v1/en/station_status"

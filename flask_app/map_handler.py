@@ -3,7 +3,13 @@ from jinja2 import Template
 from folium.map import Marker
 
 
-def create_popup_html(station):
+def create_popup_for_station(station):
+    """
+    Create a popup information to the marker representing one station.
+
+    :param station: row in the Dataframe containing information and status of one station
+    :return: html popup code
+    """
     table_html = """
     <table id="popupTable">
             <thead>
@@ -36,16 +42,22 @@ def create_popup_html(station):
             <h1 class="tableTitle"> Station: """ + str(station['station_id']) + """</h1>""" + table_html + """
         </html>
         """
-    popup = folium.Popup(folium.Html(popup_html_code, script=True, width=350))
+    popup = folium.Popup(folium.Html(popup_html_code, script=True, width=400))
     return popup
 
 
-def add_styles_to_map(html_string):
+def add_styles_to_map(folium_map_as_string):
+    """
+    Inject styles into the map. The style tag is replaced with styles infromation.
+
+    :param folium_map_as_string: Folium map converted to string
+    :return: Folium map as string with styles
+    """
     style_string = """
         <style>
 
         .tableTitle{
-            font-size:1.8em;
+            font-size:2em;
             text-align: center;
             font-weight: bolder;
         }
@@ -53,13 +65,13 @@ def add_styles_to_map(html_string):
         .tableHeader{
             text-align: center;
             border: 1px solid;
-            font-size: 1.3em;
+            font-size: 1em;
         }
 
         .popupRow{
             border: 1px solid;
             padding: 0.3em;
-            font-size: 1.3em;
+            font-size: 1em;
         }
 
         #popupTable{
@@ -67,25 +79,20 @@ def add_styles_to_map(html_string):
             margin: auto;
         }
         """
-    html_string = html_string.replace("<style>", style_string)
+    folium_map_as_string = folium_map_as_string.replace("<style>", style_string)
 
-    return html_string
-
-
-def create_popup_with_target_location(target_latitude, target_longitude):
-    popup_html_code = """
-    <h2>Target location</h2>
-    <br>
-        <h3>{}</h3>
-    <br>
-        <h3>{}</h3>
-    """.format(target_latitude, target_longitude)
-    popup_target_location = folium.Popup(folium.Html(popup_html_code, script=True, width=350))
-
-    return popup_target_location
+    return folium_map_as_string
 
 
 def add_marker_with_target_location(map_with_stations, target_latitude, target_longitude):
+    """
+    Add marker with target location to the Folium map which contains the information about stations.
+
+    :param map_with_stations: Folium map displaying the information about stations
+    :param target_latitude: user location - latitude
+    :param target_longitude: user location - longitude
+    :return: Folium map with marker of the target location (user location)
+    """
     # Modify Marker template to include the onClick event
     click_template = """{% macro script(this, kwargs) %}
             var {{ this.get_name() }} = L.marker(
@@ -104,11 +111,11 @@ def add_marker_with_target_location(map_with_stations, target_latitude, target_l
 
                           var value_lat = point['lat'];
                           var input_field_lat = document.getElementById("lat");
-                          input_field_lat.value = value_lat.toFixed(4);
+                          input_field_lat.value = value_lat.toFixed(6);
 
                           var value_lon = point['lng'];
                           var input_field_lon = document.getElementById("lon");
-                          input_field_lon.value = value_lon.toFixed(4);
+                          input_field_lon.value = value_lon.toFixed(6);
 
                       }                     
                     """
@@ -136,13 +143,22 @@ def add_marker_with_target_location(map_with_stations, target_latitude, target_l
 
 
 def create_map_with_stations(df_stations, nearest_neighbors, target_latitude, target_longitude):
+    """
+    Create a map with stations and the marker of user. The K nearest stations to the user's position are
+    in a different color than other stations.
+
+    :param df_stations: Pandas Dataframe containing the stations' information and status
+    :param nearest_neighbors: list of station which are the nearest to the target location
+    :param target_latitude: user location - latitude
+    :param target_longitude: user location - longitude
+    """
     map_with_stations = folium.Map(
         width='65%', height='65%',
         location=[target_latitude, target_longitude],  # 43.7, -79.4
         zoom_start=14)
 
     for index, station in df_stations.iterrows():
-        popup = create_popup_html(station)
+        popup = create_popup_for_station(station)
 
         latitude, longitude = station['lat'], station['lon']
 
@@ -154,12 +170,17 @@ def create_map_with_stations(df_stations, nearest_neighbors, target_latitude, ta
                 color = 'green'
 
         folium.Marker(location=[latitude, longitude], popup=popup,
-                      icon=folium.Icon(color=color, icon='university', prefix='fa')).add_to(map_with_stations)
+                      icon=folium.Icon(color=color, icon='bicycle', prefix='fa')).add_to(map_with_stations)
 
     map_with_stations = add_marker_with_target_location(map_with_stations, target_latitude, target_longitude)
 
-    map_with_stations.save('templates/folium_map.html')
-    # map_with_stations.show_in_browser()
+    # map_with_stations.save('templates/folium_map.html')
+
     map_as_html = map_with_stations.get_root().render()
     map_as_html = add_styles_to_map(map_as_html)
-    return map_as_html
+
+    # save the map in file
+    with open('templates/folium_map.html', "w", encoding='utf-8') as file:
+        file.write(map_as_html)
+
+

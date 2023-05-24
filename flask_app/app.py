@@ -1,7 +1,6 @@
 from flask import Flask, request, redirect, render_template
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-
 from map_handler import create_map_with_stations
 from get_data import get_data
 from distance_calculator import find_nearest_neighbors
@@ -11,19 +10,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'  # 3 slashes --> rel
 db = SQLAlchemy(app)
 
 
-class Todo(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return 'Created task with id {}'.format(self.id)
-
-
 @app.route('/', methods=['POST', 'GET'])
 def index():
-    if request.method == 'POST':
 
+    # generate new map
+    if request.method == 'POST':
         # get values from html form using id of each field
         target_latitude = float(request.form['lat'])
         target_longitude = float(request.form['lon'])
@@ -40,6 +31,7 @@ def index():
 
         return redirect('/')
 
+    # use the already generated map
     else:
         return render_template('map_view.html')
 
