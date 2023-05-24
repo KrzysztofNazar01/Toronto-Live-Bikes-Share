@@ -5,6 +5,12 @@ def haversine_distance(lat1, lon1, lat2, lon2):
     """
     Calculate the haversine distance between two points given their latitude and longitude.
 
+    :param lat1: Latitude of user location (source)
+    :param lon1: Longitude of user location (source)
+    :param lat2: Latitude of user location (destination)
+    :param lon2: Longitude of user location (destination)
+    :return: Haversine distance between two points
+
     Haversine formula:
         a = sin²(Δφ/2) + cos φ1 ⋅ cos φ2 ⋅ sin²(Δλ/2)
                         _   ____
@@ -34,6 +40,14 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 def find_nearest_neighbors(target_lat, target_lon, df_stations, k):
     """
     Find the K nearest neighbors to a target location (latitude and longitude) from a list of locations.
+
+    :param target_lat: Latitude of user location (source)
+    :param target_lon: Longitude of user location (source)
+    :param df_stations: Pandas Dataframe containing the information about the stations
+    :param k: Number of nearest neighbours to find
+
+    :return: K nearest neighbours to the target location
+
     """
     distances = []
     for index, location in df_stations.iterrows():

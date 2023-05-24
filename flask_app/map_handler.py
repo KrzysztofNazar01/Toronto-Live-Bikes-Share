@@ -1,7 +1,7 @@
 import folium
 from jinja2 import Template
 from folium.map import Marker
-
+from directions_handler import add_paths_to_station
 
 def create_popup_for_station(station):
     """
@@ -165,9 +165,11 @@ def create_map_with_stations(df_stations, nearest_neighbors, target_latitude, ta
         # if the station is nearby, set the color to green
         # otherwise set color to blue
         color = 'blue'
-        for nearest_neighbor in nearest_neighbors:
+        for iteration, nearest_neighbor in enumerate(nearest_neighbors):
             if nearest_neighbor['station_id'] == station['station_id']:
                 color = 'green'
+                path_visualisation = add_paths_to_station(target_latitude, target_longitude, station, iteration, len(nearest_neighbors))
+                path_visualisation.add_to(map_with_stations)
 
         folium.Marker(location=[latitude, longitude], popup=popup,
                       icon=folium.Icon(color=color, icon='bicycle', prefix='fa')).add_to(map_with_stations)
