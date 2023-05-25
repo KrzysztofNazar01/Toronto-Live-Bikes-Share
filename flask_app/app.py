@@ -4,15 +4,19 @@ from datetime import datetime
 from map_handler import create_map_with_stations
 from get_data import get_data
 from distance_calculator import find_nearest_neighbors
+from directions_between_places_handler import create_map_with_directions
 
 app = Flask(__name__)  # reference to this file
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'  # 3 slashes --> relative path
 db = SQLAlchemy(app)
 
+@app.route('/')
+def index():
+    return redirect('/search_available')
+
 
 @app.route('/search_available', methods=['POST', 'GET'])
-def index():
-
+def search_available():
     # generate new map
     if request.method == 'POST':
         # get values from html form using id of each field
@@ -25,7 +29,8 @@ def index():
         df_stations = get_data()
 
         # get the K nearest neighbours from the target location
-        nearest_neighbors = find_nearest_neighbors(target_latitude, target_longitude, df_stations, k_value, search_for_type)
+        nearest_neighbors = find_nearest_neighbors(target_latitude, target_longitude, df_stations, k_value,
+                                                   search_for_type)
 
         # create and save the map
         create_map_with_stations(df_stations, nearest_neighbors, target_latitude, target_longitude)
@@ -35,6 +40,28 @@ def index():
     # use the already generated map
     else:
         return render_template('map_view.html')
+
+
+@app.route('/search_directions', methods=['POST', 'GET'])
+def search_directions():
+    # generate new map
+    if request.method == 'POST':
+        print(request.form)
+        # get values from html form using id of each field
+        source_latitude = float(request.form['source_lat'])
+        source_longitude = float(request.form['source_lon'])
+        destination_latitude = float(request.form['dest_lat'])
+        destination_longitude = float(request.form['dest_lon'])
+
+        # create and save the map
+        create_map_with_directions(source_latitude, source_longitude,
+                                   destination_latitude, destination_longitude)
+
+        return redirect('/search_directions')
+
+    # use the already generated map
+    else:
+        return render_template('map_view_directions.html')
 
 
 if __name__ == "__main__":

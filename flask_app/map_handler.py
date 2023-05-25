@@ -1,7 +1,7 @@
 import folium
 from jinja2 import Template
 from folium.map import Marker
-from directions_handler import add_paths_to_station
+from directions_to_stations_handler import add_paths_to_station
 
 def create_popup_for_station(station):
     """
