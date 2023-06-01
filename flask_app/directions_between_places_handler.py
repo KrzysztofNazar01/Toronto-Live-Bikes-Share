@@ -7,7 +7,19 @@ from get_data import get_data
 
 def create_map_with_directions(source_latitude, source_longitude,
                                destination_latitude, destination_longitude, df_stations):
-    m = folium.Map(width='65%', height='65%', location=[source_latitude, source_longitude], zoom_start=15)
+    """
+
+    Args:
+        source_latitude:
+        source_longitude:
+        destination_latitude:
+        destination_longitude:
+        df_stations:
+
+    Returns:
+
+    """
+    m = folium.Map(width='70%', height='60%', location=[source_latitude, source_longitude], zoom_start=15)
 
     # nearest to source location
     nearest_station_with_bike = find_nearest_neighbors(source_latitude, source_longitude, df_stations, 1, 'bikes')[0]
@@ -41,26 +53,38 @@ def create_map_with_directions(source_latitude, source_longitude,
 
     folium.Marker(location=[source_latitude, source_longitude],
                   popup="Source location" + directions_button,
-                  icon=folium.Icon(color='red', icon='bicycle', prefix='fa')).add_to(m)
+                  icon=folium.Icon(color='red', icon='crosshairs', prefix='fa')).add_to(m)
 
     folium.Marker(location=[nearest_station_with_bike['lat'], nearest_station_with_bike['lon']],
-                  popup="nearest_station_with_bike" + directions_button,
+                  popup="The nearest station with bike" + directions_button,
                   icon=folium.Icon(color='orange', icon='bicycle', prefix='fa')).add_to(m)
 
     folium.Marker(location=[nearest_station_with_dock['lat'], nearest_station_with_dock['lon']],
-                  popup="nearest_station_with_dock" + directions_button,
-                  icon=folium.Icon(color='blue', icon='bicycle', prefix='fa')).add_to(m)
+                  popup="The nearest station with dock" + directions_button,
+                  icon=folium.Icon(color='blue', icon='gas-pump', prefix='fa')).add_to(m)
 
     folium.Marker(location=[destination_latitude, destination_longitude],
                   popup="Destination location" + directions_button,
-                  icon=folium.Icon(color='green', icon='bicycle', prefix='fa')).add_to(m)
+                  icon=folium.Icon(color='green', icon='font-awesome', prefix='fa')).add_to(m)
 
     m.save('templates/directions_map.html')
-    # m.show_in_browser()
 
 
 def add_path_between_points(source_latitude, source_longitude,
                             destination_latitude, destination_longitude, directions_profile, line_color):
+    """
+
+    Args:
+        source_latitude:
+        source_longitude:
+        destination_latitude:
+        destination_longitude:
+        directions_profile:
+        line_color:
+
+    Returns:
+
+    """
     openrouteservice_api_key = api_key
     client = openrouteservice.Client(key=openrouteservice_api_key)  # Specify your personal API key
 
@@ -87,18 +111,4 @@ def add_path_between_points(source_latitude, source_longitude,
                                  popup=folium.Popup(popup_content, max_width=200)  # showed on click
                                  )
     return directions
-
-
-# For debugging purpose:
-if __name__ == "__main__":
-    start_coords = [43.663340, -79.502842]  # longitude, latitude for start point
-    end_coords = [43.660825, -79.497264]
-
-    m = folium.Map(location=[start_coords[1], start_coords[0]], tiles='cartodbpositron', zoom_start=13)
-
-    # get the data from JSON
-    df_stations = get_data()
-
-    create_map_with_directions(start_coords[0], start_coords[1], end_coords[0], end_coords[1], df_stations)
-
 

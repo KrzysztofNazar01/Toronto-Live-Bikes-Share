@@ -3,30 +3,43 @@
 <head>
     <title>Toronto Live Bike Share Info</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_content.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/horizontal_menu_navbar.css') }}" />
     <script type="application/javascript" src="{{ url_for('static', filename='js/search_available_form_functions.js') }}"></script>
+    <script type="application/javascript" src="{{ url_for('static', filename='js/directions_functions.js') }}"></script>
 </head>
 <body>
  <div id="content">
-        <h1 id="main_header">Toronto Live Bike Share - available bikes and docks</h1>
+  <h1 id="main_header">Toronto Live Bike Share - search for directions</h1>
 
-    <form action="/search_directions" onsubmit="return validateFormDirections()" method="POST">
-        <p>Source:</p>
-        <label for="lat">Latitude:</label>
-        <input type="number" step="0.000001" name="source_lat" id="source_lat" value=43.663340>
-        <label for="lon">Longitude:</label>
-        <input type="number" step="0.000001" name="source_lon" id="source_lon" value=-79.502842>
-        <br>
-        <p>Destination:</p>
-        <label for="lat">Latitude:</label>
-        <input type="number" step="0.000001" name="dest_lat" id="dest_lat" value=43.660825>
-        <label for="lon">Longitude:</label>
-        <input type="number" step="0.000001" name="dest_lon" id="dest_lon" value=-79.497264>
+         <div>
+             <ul>
+              <li><a href="search_available" style="text-decoration: none;">Search available</a></li>
+              <li><a href="search_directions" class="active" style="text-decoration: none;">Search directions</a></li>
+              <li><a href="about_project" style="text-decoration: none;">About project</a></li>
+              <li><a href="about_author" style="text-decoration: none;">About author</a></li>
+            </ul>
+         </div>
 
-        <input type="submit" value="Search directions">
-    </form>
+        <div class="container" id="form_container">
+            <form action="/search_directions" onsubmit="return validateFormDirections()" method="POST">
+                <p>Source:
+                <label for="lat">Latitude:</label>
+                <input type="number" step="0.000001" name="source_lat" id="source_lat" value=43.663340>
+                <label for="lon">Longitude:</label>
+                <input type="number" step="0.000001" name="source_lon" id="source_lon" value=-79.502842>
+                </p>
+                <p>Destination:
+                <label for="lat">Latitude:</label>
+                <input type="number" step="0.000001" name="dest_lat" id="dest_lat" value=43.660825>
+                <label for="lon">Longitude:</label>
+                <input type="number" step="0.000001" name="dest_lon" id="dest_lon" value=-79.497264>
+                </p>
+                <input type="submit" value="Search directions" id="submit_button">
+            </form>
+        </div>
     </div>
-    <br>
+ <p></p>
 
 </body>
 </html>

@@ -1,26 +1,23 @@
 body:first-of-type{
-    background-color: #6aa6ff;
+    background-color: #ffffcc;
 }
 
-
-
-#search_available_form {
-    background-color: #fcf375;
-      border-radius: 25px;
-      padding: 20px;
+#form_container {
+    background-color: #c6f600;
+    border-radius: 25px;
+    padding: 20px;
+    font-size: 1.2em;
 }
 
 .folium-map{
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-
 }
 
 #main_header{
     text-align: center;
     font-weight: bold;
-
 }
 
 #submit_button{

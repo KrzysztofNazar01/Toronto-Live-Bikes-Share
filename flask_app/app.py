@@ -1,6 +1,4 @@
 from flask import Flask, request, redirect, render_template
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 from map_handler import create_map_with_stations
 from get_data import get_data
 from distance_calculator import find_nearest_neighbors
@@ -16,11 +14,14 @@ def index():
 
 @app.route('/search_available', methods=['POST', 'GET'])
 def search_available():
+    """
+    Load main page responsible for handling search for available bikes and docks.
+    """
     # generate new map
     if request.method == 'POST':
         # get values from html form using id of each field
-        target_latitude = float(request.form['lat'])
-        target_longitude = float(request.form['lon'])
+        source_latitude = float(request.form['lat'])
+        source_longitude = float(request.form['lon'])
         k_value = int(request.form['k_value'])  # Number of nearest neighbors to find
         search_for_type = request.form['search_for']
 
@@ -28,11 +29,11 @@ def search_available():
         df_stations = get_data()
 
         # get the K nearest neighbours from the target location
-        nearest_neighbors = find_nearest_neighbors(target_latitude, target_longitude, df_stations, k_value,
+        nearest_neighbors = find_nearest_neighbors(source_latitude, source_longitude, df_stations, k_value,
                                                    search_for_type)
 
         # create and save the map
-        create_map_with_stations(df_stations, nearest_neighbors, target_latitude, target_longitude)
+        create_map_with_stations(df_stations, nearest_neighbors, source_latitude, source_longitude)
 
         return redirect('/search_available')
 
@@ -43,6 +44,9 @@ def search_available():
 
 @app.route('/search_directions', methods=['POST', 'GET'])
 def search_directions():
+    """
+    Load main page responsible for handling search for directions using the live data.
+    """
     # generate new map
     if request.method == 'POST':
         # get values from html form using id of each field
