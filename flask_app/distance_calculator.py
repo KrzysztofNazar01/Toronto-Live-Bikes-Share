@@ -38,11 +38,11 @@ def haversine_distance(lat1, lon1, lat2, lon2):
 
 
 def filter_stations(df, search_for_type):
-    if search_for_type == 'bikes':
+    if search_for_type == 'Bikes':
         df = df.drop(df[df.num_bikes_available == 0].index)
         df = df.drop(df[df.is_renting == 0].index)
 
-    elif search_for_type == 'docks':
+    elif search_for_type == 'Docks':
         df = df.drop(df[df.num_docks_available == 0].index)
         df = df.drop(df[df.is_returning == 0].index)
 

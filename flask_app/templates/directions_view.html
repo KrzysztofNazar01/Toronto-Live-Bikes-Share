@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Toronto Live Bike Share Info</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+    <script type="application/javascript" src="{{ url_for('static', filename='js/search_available_form_functions.js') }}"></script>
+</head>
+<body>
+ <div id="content">
+        <h1 id="main_header">Toronto Live Bike Share - available bikes and docks</h1>
+
+    <form action="/search_directions" onsubmit="return validateFormDirections()" method="POST">
+        <p>Source:</p>
+        <label for="lat">Latitude:</label>
+        <input type="number" step="0.000001" name="source_lat" id="source_lat" value=43.663340>
+        <label for="lon">Longitude:</label>
+        <input type="number" step="0.000001" name="source_lon" id="source_lon" value=-79.502842>
+        <br>
+        <p>Destination:</p>
+        <label for="lat">Latitude:</label>
+        <input type="number" step="0.000001" name="dest_lat" id="dest_lat" value=43.660825>
+        <label for="lon">Longitude:</label>
+        <input type="number" step="0.000001" name="dest_lon" id="dest_lon" value=-79.497264>
+
+        <input type="submit" value="Search directions">
+    </form>
+    </div>
+    <br>
+
+</body>
+</html>
+
+{% extends 'directions_map.html' %}

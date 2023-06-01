@@ -3,7 +3,8 @@ from jinja2 import Template
 from folium.map import Marker
 from directions_to_stations_handler import add_paths_to_station
 
-def create_popup_for_station(station):
+
+def create_popup_for_station(station, target_latitude, target_longitude):
     """
     Create a popup information to the marker representing one station.
 
@@ -31,15 +32,41 @@ def create_popup_for_station(station):
         row += "</tr>"
         table_html += row
 
+    dest_latitude, dest_longitude = station['lat'], station['lon']
+    source_latitude, source_longitude = target_latitude, target_longitude
+
+    cycling_travel_mode = '1'
+    cycling_button = '<button onclick="redirect_to_directions({}, {}, {}, {}, {})">Cycling</button>'.format(dest_latitude, dest_longitude, source_latitude, source_longitude, cycling_travel_mode)
+    walk_travel_mode = '2'
+    walk_button = '<button onclick="redirect_to_directions({}, {}, {}, {}, {})">Walking</button>'.format(dest_latitude, dest_longitude, source_latitude, source_longitude, walk_travel_mode)
+
+    # button to directions
+    row = "<tr>"
+    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>Directions</span></button></td>'
+    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>{} {}</span></td>'.format(walk_button, cycling_button)
+    row += "</tr>"
+    table_html += row
+
+    # button to directions
+    row = "<tr>"
+    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>Directions</span></button></td>'
+    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>' \
+
+
+
     table_html += """ </tbody>
             </table>"""
 
     popup_html_code = """<!DOCTYPE html>
         <html>
         <head>
-
+    
+        
         </head>
+        <body>
             <h1 class="tableTitle"> Station: """ + str(station['station_id']) + """</h1>""" + table_html + """
+            
+        </body>
         </html>
         """
     popup = folium.Popup(folium.Html(popup_html_code, script=True, width=400))
@@ -88,6 +115,8 @@ def add_marker_with_target_location(map_with_stations, target_latitude, target_l
     """
     Add marker with target location to the Folium map which contains the information about stations.
 
+    google maps directions url example = "www.google.com/maps/dir/43.67168,-79.421192/43.67,-79.420833/data=!3m1!4b1!4m2!4m1!3e1?entry=ttu"
+
     :param map_with_stations: Folium map displaying the information about stations
     :param target_latitude: user location - latitude
     :param target_longitude: user location - longitude
@@ -107,17 +136,21 @@ def add_marker_with_target_location(map_with_stations, target_latitude, target_l
     # Create the onClick listener function as a branca element and add to the map html
     click_js = """
                     function copy_location_to_form_fields(e) {
-                          var point = e.latlng; 
-
-                          var value_lat = point['lat'];
-                          var input_field_lat = document.getElementById("lat");
-                          input_field_lat.value = value_lat.toFixed(6);
-
-                          var value_lon = point['lng'];
-                          var input_field_lon = document.getElementById("lon");
-                          input_field_lon.value = value_lon.toFixed(6);
-
-                      }                     
+                        var point = e.latlng; 
+                        
+                        var value_lat = point['lat'];
+                        var input_field_lat = document.getElementById("lat");
+                        input_field_lat.value = value_lat.toFixed(6);
+                        
+                        var value_lon = point['lng'];
+                        var input_field_lon = document.getElementById("lon");
+                        input_field_lon.value = value_lon.toFixed(6);
+                    }    
+                      
+                    function redirect_to_directions(dest_latitude, dest_longitude, source_latitude, source_longitude, travel_mode) {                
+                        url= 'https://www.google.com/maps/dir/' + dest_latitude + ',' + dest_longitude + '/' + source_latitude + ',' + source_longitude + '/data=!3m1!4b1!4m2!4m1!3e' + travel_mode + '?entry=ttu';
+                        window.open(url, '_blank');
+                    }                   
                     """
 
     e = folium.Element(click_js)
@@ -158,7 +191,7 @@ def create_map_with_stations(df_stations, nearest_neighbors, target_latitude, ta
         zoom_start=14)
 
     for index, station in df_stations.iterrows():
-        popup = create_popup_for_station(station)
+        popup = create_popup_for_station(station, target_latitude, target_longitude)
 
         latitude, longitude = station['lat'], station['lon']
 
@@ -176,13 +209,16 @@ def create_map_with_stations(df_stations, nearest_neighbors, target_latitude, ta
 
     map_with_stations = add_marker_with_target_location(map_with_stations, target_latitude, target_longitude)
 
-    # map_with_stations.save('templates/folium_map.html')
+    # TODO: add filters to select specific types of markers and routes that are visible
+    map_with_stations.add_child(folium.LayerControl())
+
+    # map_with_stations.save('templates/stations_map.html')
 
     map_as_html = map_with_stations.get_root().render()
     map_as_html = add_styles_to_map(map_as_html)
 
     # save the map in file
-    with open('templates/folium_map.html', "w", encoding='utf-8') as file:
+    with open('templates/stations_map.html', "w", encoding='utf-8') as file:
         file.write(map_as_html)
 
 

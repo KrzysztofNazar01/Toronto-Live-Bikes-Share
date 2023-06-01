@@ -7,8 +7,7 @@ from distance_calculator import find_nearest_neighbors
 from directions_between_places_handler import create_map_with_directions
 
 app = Flask(__name__)  # reference to this file
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'  # 3 slashes --> relative path
-db = SQLAlchemy(app)
+
 
 @app.route('/')
 def index():
@@ -39,29 +38,31 @@ def search_available():
 
     # use the already generated map
     else:
-        return render_template('map_view.html')
+        return render_template('stations_view.html')
 
 
 @app.route('/search_directions', methods=['POST', 'GET'])
 def search_directions():
     # generate new map
     if request.method == 'POST':
-        print(request.form)
         # get values from html form using id of each field
         source_latitude = float(request.form['source_lat'])
         source_longitude = float(request.form['source_lon'])
         destination_latitude = float(request.form['dest_lat'])
         destination_longitude = float(request.form['dest_lon'])
 
+        # get the data from JSON
+        df_stations = get_data()
+
         # create and save the map
         create_map_with_directions(source_latitude, source_longitude,
-                                   destination_latitude, destination_longitude)
+                                   destination_latitude, destination_longitude, df_stations)
 
         return redirect('/search_directions')
 
     # use the already generated map
     else:
-        return render_template('map_view_directions.html')
+        return render_template('directions_view.html')
 
 
 if __name__ == "__main__":
