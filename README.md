@@ -91,7 +91,7 @@ When ready, the user clicks the "Search" button and after a moment receives the 
 There are three types of markers: red, blue and green.
 
 #### Red marker
-The red marker represents the position of the user.
+**The red marker represents the position of the user.**
 The marker is draggable (hold left mouse button and move).
 After clicking on it, its current location is copied as the search parameter (a popup as confirmation appears).
 
@@ -100,11 +100,13 @@ After clicking on it, its current location is copied as the search parameter (a 
 </p>
 
 #### Green markers
-The green marker represents one of K of the nearest available stations.
-The station is active and has at least one available bike - mechanical or e-bike.
+**The green marker represents one of K of the nearest available stations.**
+The station fits one of the states depending on the search parameters:
+- When searching for **bikes** - the station is active, it is renting vehicles, and has at least one available bike - mechanical or e-bike.
+- When searching for **docks** - the station is active, it is accepting vehicle returns, and has at least one available dock.
 After clicking on the marker the user can see the details about the station.
 
-This is an example result when K equals 3:
+This is an example result when *K* equals 3:
 
 <p align="center">
   <img src="readme_images/img_4.png" alt="Search for available bikes and docks - green marker"/>
@@ -112,7 +114,7 @@ This is an example result when K equals 3:
 
 
 #### Blue markers
-The blue markers represent available stations.
+**The blue markers represent available stations.**
 The station is active and has at least one available dock.
 After clicking on the marker the user can see the details about the station.
 
@@ -135,7 +137,7 @@ After clicking on a green or blue marker the user can see the details about the 
 
 
 #### Routes to the nearest markers
-The routes to the nearest stations from the user location are found using [openrouteservice free API](https://openrouteservice.org/).
+**The routes to the nearest stations from the user location are found using [openrouteservice free API](https://openrouteservice.org/).**
 The closer the station to the user's location, the greener, wider and opaquer it is. 
 Routes to station in greater distances are redder, less wide and more transparent.
 
@@ -214,6 +216,13 @@ between the source location and destination location using the 4 key locations a
 <p align="center">
   <img src="readme_images/img_13.png" alt="Routes to the nearest markers"/>
 </p>
+
+## Possible improvements
+Based on my experience with using the app, I thought of adding the following functionalities:
+- when searching for bikes, add an option to search for mechanical or electrical bikes only
+- the markers representing the source and destination locations on the page responsible for searching directions could be draggable and their location should be copied to the form automatically
+- add different map layers (folium.LayerControl())
+
 
 ## Contributing
 

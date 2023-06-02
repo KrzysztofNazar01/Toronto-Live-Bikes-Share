@@ -15,7 +15,7 @@ def index():
 @app.route('/search_available', methods=['POST', 'GET'])
 def search_available():
     """
-    Load main page responsible for handling search for available bikes and docks.
+    Load page responsible for handling search for available bikes and docks.
     """
     # generate new map
     if request.method == 'POST':
@@ -28,15 +28,13 @@ def search_available():
         # get the data from JSON
         df_stations = get_data()
 
-        # get the K nearest neighbours from the target location
-        nearest_neighbors = find_nearest_neighbors(source_latitude, source_longitude, df_stations, k_value,
-                                                   search_for_type)
+        # get the K nearest neighbours from the source location
+        nearest_neighbors = find_nearest_neighbors(source_latitude, source_longitude, df_stations, k_value, search_for_type)
 
         # create and save the map
         create_map_with_stations(df_stations, nearest_neighbors, source_latitude, source_longitude)
 
         return redirect('/search_available')
-
     # use the already generated map
     else:
         return render_template('stations_view.html')
@@ -45,7 +43,7 @@ def search_available():
 @app.route('/search_directions', methods=['POST', 'GET'])
 def search_directions():
     """
-    Load main page responsible for handling search for directions using the live data.
+    Load page responsible for handling search for directions
     """
     # generate new map
     if request.method == 'POST':
@@ -59,11 +57,9 @@ def search_directions():
         df_stations = get_data()
 
         # create and save the map
-        create_map_with_directions(source_latitude, source_longitude,
-                                   destination_latitude, destination_longitude, df_stations)
+        create_map_with_directions(source_latitude, source_longitude, destination_latitude, destination_longitude, df_stations)
 
         return redirect('/search_directions')
-
     # use the already generated map
     else:
         return render_template('directions_view.html')

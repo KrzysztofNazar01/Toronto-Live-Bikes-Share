@@ -1,15 +1,20 @@
 import folium
 from jinja2 import Template
 from folium.map import Marker
-from directions_to_stations_handler import add_paths_to_station
+from directions_to_stations_handler import get_routes_between_source_location_and_station
 
 
 def create_popup_for_station(station, source_latitude, source_longitude):
     """
     Create a popup information to the marker representing one station.
 
-    :param station: row in the Dataframe containing information and status of one station
-    :return: html popup code
+    Args:
+        station: row in the Dataframe containing information and status of one station
+        source_latitude: source location - latitude
+        source_longitude: source location - longitude
+
+    Returns:
+         popup: html popup code
     """
     table_html = """
     <table id="popupTable">
@@ -35,32 +40,9 @@ def create_popup_for_station(station, source_latitude, source_longitude):
         row += "</tr>"
         table_html += row
 
-    dest_latitude, dest_longitude = station['lat'], station['lon']
+    table_html = add_buttons_with_directions(source_latitude, source_longitude, station, table_html)
 
-    cycling_travel_mode = '1'
-    cycling_button = '<button onclick="redirect_to_directions({}, {}, {}, {}, {})">Cycling</button>'.format(
-        dest_latitude, dest_longitude, source_latitude, source_longitude, cycling_travel_mode)
-    walk_travel_mode = '2'
-    walk_button = '<button onclick="redirect_to_directions({}, {}, {}, {}, {})">Walking</button>'.format(dest_latitude,
-                                                                                                         dest_longitude,
-                                                                                                         source_latitude,
-                                                                                                         source_longitude,
-                                                                                                         walk_travel_mode)
-
-    # button to directions
-    row = "<tr>"
-    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>Directions</span></button></td>'
-    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>{} {}</span></td>'.format(walk_button,
-                                                                                                    cycling_button)
-    row += "</tr>"
-    table_html += row
-
-    # button to directions
-    row = "<tr>"
-    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>Directions</span></button></td>'
-    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>'
-    table_html += """ </tbody>
-            </table>"""
+    table_html += """ </tbody> </table>"""
 
     popup_html_code = """<!DOCTYPE html>
         <html>
@@ -75,14 +57,51 @@ def create_popup_for_station(station, source_latitude, source_longitude):
     return popup
 
 
-def add_styles_to_map(folium_map_as_string):
+def add_buttons_with_directions(source_latitude, source_longitude, station, table_html):
     """
-    Inject styles into the map. The style tag is replaced with styles infromation.
+    Add buttons which redirect to Google Maps and show the directions from source location to destination location.
+    Two buttons are added - Walking and Cycling button.
+    Args:
+        source_latitude: source location - latitude
+        source_longitude: source location - longitude
+        station: row in the Dataframe containing information and status of one station
+        table_html: code representing HTML table with station's details
 
-    :param folium_map_as_string: Folium map converted to string
-    :return: Folium map as string with styles
+    Returns:
+        table_html: updated HTML code of table with station's details
     """
-    style_string = """
+    dest_latitude, dest_longitude = station['lat'], station['lon']
+
+    # create html code for buttons
+    cycling_travel_mode = '1'
+    cycling_button = '<button onclick="redirect_to_directions({}, {}, {}, {}, {})">Cycling</button>' \
+        .format(dest_latitude, dest_longitude, source_latitude, source_longitude, cycling_travel_mode)
+
+    walk_travel_mode = '2'
+    walk_button = '<button onclick="redirect_to_directions({}, {}, {}, {}, {})">Walking</button>' \
+        .format(dest_latitude, dest_longitude, source_latitude, source_longitude, walk_travel_mode)
+
+    # add new row in table
+    row = "<tr>"
+    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>Directions</span></button></td>'
+    row += '<td class="popupRow" style="background-color: #4ce8fd;"><span>{} {}</span></td>'.format(cycling_button, walk_button)
+    row += "</tr>"
+
+    table_html += row
+    return table_html
+
+
+def add_styles_to_map(folium_map):
+    """
+    Inject styles into the map. The style tag is replaced with styles information.
+
+    Args:
+        folium_map: Folium map converted to string
+
+    Returns:
+        folium_map: Folium map as string with styles
+    """
+    styles = """
         <style>
 
         .tableTitle{
@@ -109,21 +128,22 @@ def add_styles_to_map(folium_map_as_string):
             margin: auto;
         }
         """
-    folium_map_as_string = folium_map_as_string.replace("<style>", style_string)
+    folium_map = folium_map.replace("<style>", styles)
 
-    return folium_map_as_string
+    return folium_map
 
 
-def add_marker_with_target_location(map_with_stations, source_latitude, source_longitude):
+def add_marker_with_source_location(map_with_stations, source_latitude, source_longitude):
     """
-    Add marker with target location to the Folium map which contains the information about stations.
+    Add marker with source location to the Folium map which contains the information about stations.
 
-    google maps directions url example = "www.google.com/maps/dir/43.67168,-79.421192/43.67,-79.420833/data=!3m1!4b1!4m2!4m1!3e1?entry=ttu"
+    Args:
+        map_with_stations: Folium map displaying the information about stations
+        source_latitude: source location - latitude
+        source_longitude: source location - longitude
 
-    :param map_with_stations: Folium map displaying the information about stations
-    :param source_latitude: user location - latitude
-    :param source_longitude: user location - longitude
-    :return: Folium map with marker of the target location (user location)
+    Returns:
+        map_with_stations: Folium map with marker of the source location
     """
     # Modify Marker template to include the onClick event
     click_template = """{% macro script(this, kwargs) %}
@@ -162,7 +182,7 @@ def add_marker_with_target_location(map_with_stations, source_latitude, source_l
     html.script._children[e.get_name()] = e
 
     popup_html_code = """
-                        <p id="marker_target_location"
+                        <p id="marker_source_location"
                         style="font-size:1.3em; text-align:center;font-weight: bolder;margin-left: auto; margin-right: auto;">
                         User location set!
                         </p>
@@ -170,7 +190,7 @@ def add_marker_with_target_location(map_with_stations, source_latitude, source_l
     popup = folium.Popup(folium.Html(popup_html_code, script=True, width=130))
 
     # Add marker (click on map an alert will display with latlng values)
-    folium.Marker(location=[source_latitude, source_longitude],  # target location
+    folium.Marker(location=[source_latitude, source_longitude],
                   popup=popup,
                   icon=folium.Icon(color="red", icon='crosshairs', prefix='fa'),
                   draggable=True).add_to(map_with_stations)
@@ -180,13 +200,14 @@ def add_marker_with_target_location(map_with_stations, source_latitude, source_l
 
 def create_map_with_stations(df_stations, nearest_neighbors, source_latitude, source_longitude):
     """
-    Create a map with stations and the marker of user. The K nearest stations to the user's position are
-    in a different color than other stations.
+    Create a map with stations and the marker of user.
+    The K nearest stations to the user's position are in a different color than other stations.
 
-    :param df_stations: Pandas Dataframe containing the stations' information and status
-    :param nearest_neighbors: list of station which are the nearest to the target location
-    :param source_latitude: user location - latitude
-    :param source_longitude: user location - longitude
+    Args:
+        df_stations: Pandas Dataframe containing the stations' information and status
+        nearest_neighbors: list of station which are the nearest to the source location
+        source_latitude: source location - latitude
+        source_longitude: source location - longitude
     """
     map_with_stations = folium.Map(
         width='70%', height='60%',
@@ -204,19 +225,17 @@ def create_map_with_stations(df_stations, nearest_neighbors, source_latitude, so
         for iteration, nearest_neighbor in enumerate(nearest_neighbors):
             if nearest_neighbor['station_id'] == station['station_id']:
                 color = 'green'
-                path_visualisation = add_paths_to_station(source_latitude, source_longitude, station, iteration,
-                                                          len(nearest_neighbors))
+                path_visualisation = get_routes_between_source_location_and_station(source_latitude, source_longitude, station, iteration,
+                                                                                    len(nearest_neighbors))
                 path_visualisation.add_to(map_with_stations)
 
         folium.Marker(location=[latitude, longitude], popup=popup,
                       icon=folium.Icon(color=color, icon='bicycle', prefix='fa')).add_to(map_with_stations)
 
-    map_with_stations = add_marker_with_target_location(map_with_stations, source_latitude, source_longitude)
+    map_with_stations = add_marker_with_source_location(map_with_stations, source_latitude, source_longitude)
 
     # TODO: add filters to select specific types of markers and routes that are visible
     # map_with_stations.add_child(folium.LayerControl())
-
-    # map_with_stations.save('templates/stations_map.html')
 
     map_as_html = map_with_stations.get_root().render()
     map_as_html = add_styles_to_map(map_as_html)
