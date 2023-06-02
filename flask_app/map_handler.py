@@ -164,7 +164,7 @@ def add_marker_with_target_location(map_with_stations, source_latitude, source_l
     popup_html_code = """
                         <p id="marker_target_location"
                         style="font-size:1.3em; text-align:center;font-weight: bolder;margin-left: auto; margin-right: auto;">
-                        Target location set!
+                        User location set!
                         </p>
                       """
     popup = folium.Popup(folium.Html(popup_html_code, script=True, width=130))
