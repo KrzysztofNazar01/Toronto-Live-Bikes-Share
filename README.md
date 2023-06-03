@@ -217,11 +217,12 @@ between the source location and destination location using the 4 key locations a
   <img src="readme_images/img_13.png" alt="Routes to the nearest markers"/>
 </p>
 
-## Possible improvements
-Based on my experience with using the app, I thought of adding the following functionalities:
-- when searching for bikes, add an option to search for mechanical or electrical bikes only
-- the markers representing the source and destination locations on the page responsible for searching directions could be draggable and their location should be copied to the form automatically
-- add different map layers (folium.LayerControl())
+## Future improvements
+Based on my experience while using the app, I thought of adding the following functionalities:
+- When searching for bikes, add an option to search for mechanical or electrical bikes only. I think it is quite easy to add - it requires filtering the data stored in the Dataframe before displaying it.
+- Make the markers representing the source and destination locations on the page responsible for searching directions draggable and clickable. Currently, the user has to insert the longitudes and latitudes manually, which can be time consuming and lead to human errors. The location of the marker might be copied automatically when it is clicked - this would be way more convenient and user-friendly. 
+- When displaying a route, the time of travel from one point to the other could be displayed. I believe this information is in the response from openrouteservice API, but currently I don’t know how to get it from the response body.
+- Adding different map layers to the maps might be a good idea. The folium.LayerControl() method could be used. This improvement would make the user experience better.
 
 
 ## Contributing
