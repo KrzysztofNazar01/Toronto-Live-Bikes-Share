@@ -61,6 +61,12 @@ pip install -r requirements.txt
 ```
 
 ## Running the project
+Firstly, generate your API key at [openrouteservice website](https://openrouteservice.org/).
+After generating your key, you can find it in the user dashboard.
+Copy it and paste it into the *openrouteservice_api_key.py* file:
+![img.png](readme_images/img_api_key.png)
+
+
 Enter the directory *flask_app/* with file *app.py* and run the Python file.
 ```bash
 cd flask_app/
