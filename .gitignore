@@ -69,7 +69,7 @@ flask_app/instance/
 .scrapy
 
 # Sphinx documentation
-docs/_build/
+flask_app/docs/_build/
 
 # PyBuilder
 .pybuilder/
