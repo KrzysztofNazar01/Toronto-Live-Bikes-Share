@@ -1,5 +1,9 @@
 # Toronto Live Bikes Share Flask Web App 
 
+## Live demo of the app
+Use [this link](http://krzysztofnazartoronto.pythonanywhere.com/search_available) to check the demo of this application hosted by [Pythonanywhere.com](https://pythonanywhere.com).
+
+
 ## The goal of the project
 The goal of the project is to create a [Flask](https://flask.palletsprojects.com/en/2.3.x/) web application which allows searching for available bikes and docks in Toronto.
 The application uses live data from the bike sharing system [Bike Share Toronto](https://bikesharetoronto.com/). 
