@@ -59,18 +59,25 @@ def add_markers_with_key_locations_to_map(source_latitude, source_longitude,
                 cycling_travel_mode)
 
     # add markers to Folium map
-    folium.Marker(location=[source_latitude, source_longitude],
+    source_marker = folium.Marker(location=[source_latitude, source_longitude],
                   popup="Source location" + directions_button,
-                  icon=folium.Icon(color='red', icon='crosshairs', prefix='fa')).add_to(folium_map)
-    folium.Marker(location=[nearest_station_with_bike['lat'], nearest_station_with_bike['lon']],
+                  icon=folium.Icon(color='red', icon='crosshairs', prefix='fa'))
+    source_marker.add_to(folium_map)
+
+    bike_marker = folium.Marker(location=[nearest_station_with_bike['lat'], nearest_station_with_bike['lon']],
                   popup="The nearest station with bike" + directions_button,
-                  icon=folium.Icon(color='orange', icon='bicycle', prefix='fa')).add_to(folium_map)
-    folium.Marker(location=[nearest_station_with_dock['lat'], nearest_station_with_dock['lon']],
+                  icon=folium.Icon(color='orange', icon='bicycle', prefix='fa'))
+    bike_marker.add_to(folium_map)
+
+    station_marker = folium.Marker(location=[nearest_station_with_dock['lat'], nearest_station_with_dock['lon']],
                   popup="The nearest station with dock" + directions_button,
-                  icon=folium.Icon(color='blue', icon='gas-pump', prefix='fa')).add_to(folium_map)
-    folium.Marker(location=[destination_latitude, destination_longitude],
+                  icon=folium.Icon(color='blue', icon='gas-pump', prefix='fa'))
+    station_marker.add_to(folium_map)
+
+    destination_marker = folium.Marker(location=[destination_latitude, destination_longitude],
                   popup="Destination location" + directions_button,
-                  icon=folium.Icon(color='green', icon='font-awesome', prefix='fa')).add_to(folium_map)
+                  icon=folium.Icon(color='green', icon='font-awesome', prefix='fa'))
+    destination_marker.add_to(folium_map)
 
 
 def add_routes_connecting_key_locations_to_map(source_latitude, source_longitude,
