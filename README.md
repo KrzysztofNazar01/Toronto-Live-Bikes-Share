@@ -1,7 +1,7 @@
 # Toronto Live Bikes Share Flask Web App 
 
-## Live demo of the app
-Use [this link](http://krzysztofnazartoronto.pythonanywhere.com/search_available) to check the demo of this application hosted by [Pythonanywhere.com](https://pythonanywhere.com).
+## [Live demo](https://krzysztofnazartoronto.pythonanywhere.com/search_available) of the app
+Use [**this link**](https://krzysztofnazartoronto.pythonanywhere.com/search_available) to check the demo of this application hosted by [Pythonanywhere.com](https://pythonanywhere.com).
 
 
 ## The goal of the project
