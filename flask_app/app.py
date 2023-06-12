@@ -7,6 +7,11 @@ from directions_between_places_handler import create_map_with_directions
 app = Flask(__name__)  # reference to this file
 
 
+@app.errorhandler(404)
+def invalid_route(e):
+    return render_template('error_404.html')
+
+
 @app.route('/')
 def index():
     return redirect('/search_available')
