@@ -17,6 +17,16 @@ def index():
     return redirect('/search_available')
 
 
+@app.route('/about_author')
+def about_author():
+    return render_template('about_author_view.html')
+
+
+@app.route('/about_project')
+def about_project():
+    return render_template('about_project_view.html')
+
+
 @app.route('/search_available', methods=['POST', 'GET'])
 def search_available():
     """

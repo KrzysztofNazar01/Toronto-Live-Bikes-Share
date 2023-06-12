@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Toronto Live Bike Share Info</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main_content.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/horizontal_menu_navbar.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/about_author.css') }}" />
+		<script type="application/javascript" src="{{ url_for('static', filename='js/search_available_form_functions.js') }}"></script>
+		<script type="application/javascript" src="{{ url_for('static', filename='js/directions_functions.js') }}"></script>
+	</head>
+	<body>
+		<div id="content">
+			<h1 id="main_header">Toronto Live Bike Share - about author</h1>
+			<div>
+				<ul id="navbar_links">
+					<li><a href="search_available" style="text-decoration: none;">Search available</a></li>
+					<li><a href="search_directions" style="text-decoration: none;">Search directions</a></li>
+					<li><a href="about_project" style="text-decoration: none;">About project</a></li>
+					<li><a href="about_author" class="active" style="text-decoration: none;">About author</a></li>
+				</ul>
+			</div>
+			<div class="container" id="about_author_container">
+				<div class="content">
+					<h1>Welcome to a webapp created by Krzysztof Nazar</h1>
+					<br>
+					<p>
+						Hi! My name is Krzysztof Nazar.
+						I am a third-year student at the Gdańsk University of Technology.
+						My life goal is to constantly develop both my soft and hard skills.
+						Gaining knowledge about new technologies as well as creating strong relationships with people are the things I concentrate on the most.
+					</p>
+					<br>
+					<p>
+						Feel free to check my
+						<a style="color:black; text-decoration: underline;" href="https://github.com/KrzysztofNazar01" target="_blank">GitHub</a>
+					</p>
+					<p>
+						Or connect with me on
+						<a style="color:black; text-decoration: underline;" href="https://www.linkedin.com/in/krzysztof-nazar-550532219/" target="_blank">LinkedIn</a>
+					</p>
+					<p>
+						Or simply email me: krzysztof.nazar01@gmail.com
+					</p>
+				</div>
+				<br>
+				<br>
+			</div>
+		</div>
+		<div id="authorFooter"></div>
+	</body>
+</html>

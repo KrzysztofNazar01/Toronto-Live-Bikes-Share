@@ -1,0 +1,13 @@
+#about_author_container {
+    background-color: #c6f600;
+    border-radius: 25px;
+    padding: 20px;
+    font-size: 1.2em;
+	margin-right: 3em;
+	margin-left: 3em;
+}
+
+.doc_link{
+   color:black;
+    text-decoration: underline;
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Toronto Live Bike Share Info</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main_content.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/horizontal_menu_navbar.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/about_project.css') }}" />
+		<script type="application/javascript" src="{{ url_for('static', filename='js/search_available_form_functions.js') }}"></script>
+		<script type="application/javascript" src="{{ url_for('static', filename='js/directions_functions.js') }}"></script>
+	</head>
+	<body>
+		<div id="content">
+			<h1 id="main_header">Toronto Live Bike Share - about author</h1>
+			<div>
+				<ul id="navbar_links">
+                    <li><a href="search_available" style="text-decoration: none;">Search available</a></li>
+					<li><a href="search_directions" style="text-decoration: none;">Search directions</a></li>
+					<li><a href="about_project" class="active" style="text-decoration: none;">About project</a></li>
+					<li><a href="about_author" style="text-decoration: none;">About author</a></li>
+				</ul>
+			</div>
+			<div class="container" id="about_author_container">
+				<div class="content">
+					<h1>Welcome to a webapp created by Krzysztof Nazar</h1>
+					<p>
+					<h2>The goal of the project</h2>
+					The goal of the project is to create a Flask web application which allows searching for available bikes and docks in Toronto. The application uses live data from the bike sharing system Bike Share Toronto.
+					<h2>Bike Share Toronto</h2>
+					The system offers 24/7 convenient access to 7,246 bikes (6722 mechanical and 524 electric) and 668 stations across Toronto’s vast biking network.
+					</p>
+					<p>
+						Bike Share Toronto publishes JSON files which updates in real-time by connecting to the Bike Share backend software. The open API transmits live data under the General Bikeshare Feed Specification (GBFS).
+					</p>
+					<h2>Read more in <a style="color:black; text-decoration: underline;" href="https://github.com/KrzysztofNazar01/Toronto-Live-Bikes-Share/blob/main/README.md" target="_blank">README.md file</a> </h2>
+					<p>
+						If you want to know more about this project, read the README file, which is available on
+						<a style="color:black; text-decoration: underline;" href="https://github.com/KrzysztofNazar01/Toronto-Live-Bikes-Share" target="_blank">GitHub repository</a>.
+					</p>
+					<br>
+					<p>
+						Feel free to check my
+						<a style="color:black; text-decoration: underline;" href="https://github.com/KrzysztofNazar01" target="_blank">GitHub</a>
+					</p>
+					<p>
+						Or connect with me on
+						<a style="color:black; text-decoration: underline;" href="https://www.linkedin.com/in/krzysztof-nazar-550532219/" target="_blank">LinkedIn</a>
+					</p>
+					<p>
+						Or simply email me: krzysztof.nazar01@gmail.com
+					</p>
+				</div>
+				<br>
+			</div>
+		</div>
+		<div id="authorFooter"></div>
+	</body>
+</html>

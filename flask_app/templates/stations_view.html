@@ -1,57 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Toronto Live Bike Share Info</title>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/main_content.css') }}" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/horizontal_menu_navbar.css') }}" />
-    <script type="application/javascript" src="{{ url_for('static', filename='js/search_available_form_functions.js') }}"></script>
-</head>
-<body>
-    <div id="content">
-        <h1 id="main_header">Toronto Live Bike Share - search for available bikes and docks</h1>
-
-         <div>
-             <ul>
-              <li><a href="search_available" class="active" style="text-decoration: none;">Search available</a></li>
-              <li><a href="search_directions" style="text-decoration: none;">Search directions</a></li>
-              <li><a href="about_project" style="text-decoration: none;">About project</a></li>
-              <li><a href="about_author" style="text-decoration: none;">About author</a></li>
-            </ul>
-         </div>
-
-        <div class="container" id="form_container">
-
-            <form action="/search_available" onsubmit="return validateFormStations()" method="POST">
-
-                <p>Search parameters:
-
-                <label for="lat">Latitude:</label>
-                <input type="number" step="0.000001" name="lat" id="lat">
-
-                <label for="lon">Longitude:</label>
-                <input type="number" step="0.000001" name="lon" id="lon">
-
-                <label for="k_value">K value:</label>
-                <input type="number" name="k_value" id="k_value" value="3">
-                </p>
-
-                <p>Search for:
-
-                <input type="radio" id="bikes" name="search_for" value="Bikes" checked>
-                <label for="bikes">Bikes</label>
-
-                <input type="radio" id="docks" name="search_for" value="Docks">
-                <label for="docks">Docks</label><br>
-                </p>
-
-                <input type="submit" value="Search" id="submit_button">
-            </form>
-        </div>
-    </div>
-
-<p></p>
-</body>
+	<head>
+		<title>Toronto Live Bike Share Info</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main_content.css') }}" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/horizontal_menu_navbar.css') }}" />
+		<script type="application/javascript" src="{{ url_for('static', filename='js/search_available_form_functions.js') }}"></script>
+	</head>
+	<body>
+		<div id="content">
+			<h1 id="main_header">Toronto Live Bike Share - search for available bikes and docks</h1>
+			<div>
+				<ul id="navbar_links">
+					<li><a href="search_available" class="active" style="text-decoration: none;">Search available</a></li>
+					<li><a href="search_directions" style="text-decoration: none;">Search directions</a></li>
+					<li><a href="about_project" style="text-decoration: none;">About project</a></li>
+					<li><a href="about_author" style="text-decoration: none;">About author</a></li>
+				</ul>
+			</div>
+			<div class="container" id="form_container">
+				<form action="/search_available" onsubmit="return validateFormStations()" method="POST">
+					<p>Search parameters:
+						<label for="lat">Latitude:</label>
+						<input type="number" step="0.000001" name="lat" id="lat">
+						<label for="lon">Longitude:</label>
+						<input type="number" step="0.000001" name="lon" id="lon">
+						<label for="k_value">K value:</label>
+						<input type="number" name="k_value" id="k_value" value="3">
+					</p>
+					<p>Search for:
+						<input type="radio" id="bikes" name="search_for" value="Bikes" checked>
+						<label for="bikes">Bikes</label>
+						<input type="radio" id="docks" name="search_for" value="Docks">
+						<label for="docks">Docks</label><br>
+					</p>
+					<input type="submit" value="Search" id="submit_button">
+				</form>
+			</div>
+		</div>
+		<p></p>
+	</body>
 </html>
-
 {% extends 'stations_map.html' %}

@@ -1,9 +1,11 @@
-ul {
+#navbar_links {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
   background-color: #333;
+  border-radius: 20px;
+  margin-bottom: 1em;
 }
 
 li {
@@ -21,9 +23,9 @@ li a {
 }
 
 li a:hover:not(.active) {
-  background-color: #111;
+  background-color: #726f6f;
 }
 
 .active {
-  background-color: #4ee06d;
+  background-color: #00ff39;
 }
