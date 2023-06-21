@@ -76,4 +76,9 @@ def get_data():
     df_stations = pd.merge(df_information, df_status, on="station_id")
     df_stations = format_data(df_stations)
 
+    print(df_stations.columns.values)
+    first_three_rows = df_stations.head(3)
+
+    # Save the selected rows to a CSV file
+    first_three_rows.to_csv('first_three_rows_output.csv', index=False)
     return df_stations

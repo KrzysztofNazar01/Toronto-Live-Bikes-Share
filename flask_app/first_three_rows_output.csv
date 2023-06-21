@@ -1,0 +1,4 @@
+station_id,lat,lon,address,capacity,is_charging_station_x,nearby_distance,num_bikes_available,num_bikes_disabled,num_docks_available,num_docks_disabled,is_charging_station_y,is_renting,is_returning,num_bikes_available_types_mechanical,num_bikes_available_types_ebike
+7000,43.639832,-79.395954,Fort York  Blvd / Capreol Ct,35,False,500.0,21,1,13,0,False,1,1,21,0
+7001,43.66496415990742,-79.38355031526893,Yonge / Wellesley,23,True,500.0,0,0,18,0,True,0,0,5,0
+7002,43.667333,-79.399429,St. George St / Bloor St W,19,False,500.0,2,1,16,0,False,1,1,2,0
